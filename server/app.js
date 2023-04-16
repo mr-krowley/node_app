@@ -4,10 +4,11 @@ import cors from "cors"
 //включение библиотек
 const app = express()
 const PORT = 5000;
-app.use(cors());
 
 // наша база данных :)
 const users = [];
+
+app.use(cors());
 
 //так сможем читать json
  app.use(express.json())
@@ -15,9 +16,9 @@ const users = [];
 
 //обработчик запроса
 app.post("/user", (req, res) => {
-  const { name, psssword } = req.body;
+  const { name, password } = req.body;
+  let User = users.find((user) => user.name === name);
 
-  let User = users.find((user) => user.name === name)
   if (User) {
     if (User.password === password) {
       res.send("Добро пожаловать")
@@ -26,7 +27,7 @@ app.post("/user", (req, res) => {
     }
   } else {
    //если такого пользователя нет то сощдаем его
-    users.push({ name, psssword })
+    users.push({ name, password })
     res.status(201).send("Пользователь создан");
   }
 })
